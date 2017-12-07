@@ -1,6 +1,6 @@
 var alive = [0, 1, 2, 3, 4];
 $(function(){
-  $("#button").bind("click", robot);
+  $(".apb").bind("click", robot);
   // TO DO 
   // block response
   // $("#button").bind("mouseleave", reset);  
@@ -22,7 +22,7 @@ function getSmallRed(index) {
 }
 
 function f1(obj, myself) {
-  $.get("/", function(result){
+  $.post("/", function(result){
     obj.text(result);
     myself.removeClass("untouch").addClass("touch");
     alive.splice(alive.indexOf(myself.index()), 1);  //kill one

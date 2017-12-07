@@ -1,7 +1,7 @@
 var alive = [0, 1, 2, 3, 4];
 var order = [];
 $(function(){
-  $("#button").bind("click", robot);
+  $(".apb").bind("click", robot);
   // TO DO 
   // block response
   $("#button").bind("mouseleave", reset);  
