@@ -41,7 +41,6 @@ function f1(obj, myself, callback) {
 }
 
 function f2(times) {
-  console.log(times);
   if(times != 4)
     part(times+1, f2);
   else
