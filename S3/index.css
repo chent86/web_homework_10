@@ -94,8 +94,8 @@ body {
 	width: 130px;
 	height: 130px;
 	border-radius: 50%;
-	background-color: #7E7E7E;
 	transition: all 0.5s;
+	user-select: none;
 }
 
 /*#info-bar .info li {
@@ -119,10 +119,12 @@ body {
 
 .untouch {
 	background-color: #383F9F;
+	cursor: pointer;
 }
 
 .touch {
 	background-color: #586868;
+	cursor: not-allowed;
 }
 
 #control-ring-container li {
@@ -142,6 +144,7 @@ body {
 	font-family: arial;
 	color: #26E79E;
 	opacity: 0;
+	user-select: none;
 }
 
 .hide {
@@ -154,16 +157,16 @@ body {
 
 #button:hover #control-ring li span {
 	position: absolute;
-	color: white;
-	left: 23px;
-	font-size: 7px;
-	line-height: 2.7;
-	background-color: red;
-	border-radius: 50%;
-	width: 10px;
-	height: 10px;
-	text-align: center;
-	line-height: 1;
+  color: white;
+  left: 23px;
+  font-weight: bold;
+  font-size: 9px;
+  line-height: 1.5;
+  background-color: red;
+  border-radius: 50%;
+  width: 13px;
+  height: 13px;
+  text-align: center;
 }
 
 #button:hover #control-ring li:nth-child(1) {

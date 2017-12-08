@@ -1,16 +1,15 @@
 var alive = [0, 1, 2, 3, 4];
+var req_queue = [];
 $(function(){
   $(".apb").bind("click", robot);
-  // TO DO 
-  // block response
-  // $("#button").bind("mouseleave", reset);  
+  $("#button").bind("mouseleave", reset);  
 });
 function robot() {
   for(var i = 0; i < 5; i++) {
     getSmallRed(i);
     var myself = $("#control-ring li:eq("+i.toString()+")");
     var obj = $("#control-ring span:eq("+myself.index().toString()+")");
-    f1(obj, myself, i);
+    getRandomNumber(obj, myself, i);
   }  
 }
 
@@ -21,14 +20,18 @@ function getSmallRed(index) {
   obj.text("...").removeClass("hide").addClass("show");  
 }
 
-function f1(obj, myself, times) {
-  $.get("/"+times, function(result){
-    obj.text(result);
-    myself.removeClass("untouch").addClass("touch");
-    alive.splice(alive.indexOf(myself.index()), 1);  //kill one
-    if(alive.length == 0)
-      count();
-  });
+function getRandomNumber(obj, myself, times) {
+  req_queue.push(
+    $.get("/"+times, function(result){
+      obj.text(result);
+      myself.removeClass("untouch").addClass("touch");
+      alive.splice(alive.indexOf(myself.index()), 1);  //kill one
+      if(alive.length == 0) {
+        $(".info").removeClass("touch").addClass("untouch");
+        setTimeout(count, 1000);
+      }
+    })
+  );
 }
 
 function count() {
@@ -36,7 +39,8 @@ function count() {
     var result = 0;
     for(var i = 0; i < 5; i++)
       result += parseInt($("#control-ring span:eq("+i.toString()+")").text());
-    $("#info-bar span").text(result.toString()).removeClass("hide").addClass("show");;
+    $("#info-bar span").text(result.toString()).removeClass("hide").addClass("show");
+    $(".info").removeClass("untouch").addClass("touch");
   }
 }
 
@@ -45,4 +49,7 @@ function reset() {
   $("#control-ring span").removeClass("show").addClass("hide");
   $("#control-ring li").removeClass("touch").addClass("untouch"); //save all
   alive = [0, 1, 2, 3, 4];
+  for(x in req_queue)
+    req_queue[x].abort();
+  req_queue = [];  
 }
