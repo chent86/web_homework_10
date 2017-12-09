@@ -53,6 +53,7 @@ body {
   text-align: center;
   font-family: arial;
   height: 140px;
+  user-select: none;
 }
 
 #talking span {

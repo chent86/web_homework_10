@@ -3,7 +3,7 @@ $(function(){
   $(".apb").bind("mouseleave", reset);  
 });
 function robot() {
-    begin = true;
+  if($(".apb").hasClass("apb_untouch")) {
     var alive = [0, 1, 2, 3, 4];
     var order = [];
     var handler = [];
@@ -28,6 +28,7 @@ function robot() {
     handler.push(name_set[5]);
     $("#order").text(letter).removeClass("hide").addClass("show");
     handler[0](0, 1, handler, alive, handler[1]);                          //start
+  }
 }
 
 function touch(index, callback) {
