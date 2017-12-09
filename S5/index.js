@@ -1,5 +1,4 @@
 var alive = [0, 1, 2, 3, 4];
-var order = [];
 begin = false;
 $(function(){
   $(".apb").bind("click", robot);
@@ -8,27 +7,30 @@ $(function(){
 function robot() {
   if(!begin) {
     begin = true;
-    order = [];
+    var order = [];
+    var handler = [];
     $(".apb").removeClass("apb_untouch").addClass("apb_touch");
     var letter = "";
+    var name_set = {
+      0:aHandler,
+      1:bHandler,
+      2:cHandler,
+      3:dHandler,
+      4:eHandler,
+      5:bubbleHandler
+    };
     while(order.length != 5) {
       var tmp = Math.round(Math.random() * 4);
       if(order.indexOf(tmp) == -1) {
         order.push(tmp);
-        letter += String.fromCharCode('A'.charCodeAt()+tmp)+" ";
+        letter += String.fromCharCode('A'.charCodeAt()+tmp)+" ";    //get random sequence
+        handler.push(name_set[tmp]);
       }
     }
+    handler.push(name_set[5]);
     $("#order").text(letter).removeClass("hide").addClass("show");
-    handler(0, check);
+    handler[0](0, 1, handler, handler[1]);                          //start
   }
-}
-
-function handler(times, callback) {
-  touch(order[times], function(index, obj, myself){
-    getRandomNumber(obj, myself, function() {
-      callback(times);
-    });
-  });
 }
 
 function touch(index, callback) {
@@ -40,7 +42,7 @@ function touch(index, callback) {
     myself.removeClass("touch").addClass("untouch");
     var obj = $("#control-ring span:eq("+myself.index().toString()+")");
     obj.text("...").removeClass("hide").addClass("show");
-    callback(index, obj, myself);   
+    callback(obj, myself);   
   }
 }
 
@@ -56,27 +58,80 @@ function getRandomNumber(obj, myself, callback) {
         }
         if(alive.length == 0)
           $(".info").removeClass("touch").addClass("untouch");
-        setTimeout(callback, 1000);
+        // setTimeout(callback, 1000);
+        callback(parseInt(result));
       }
     });
   }
 }
 
-function check(times) {
-  if(times != 4)
-    handler(times+1, check);
-  else
-    setTimeout(count, 1000);  
+function aHandler(current, index, array, callback) {
+  touch(0, function(obj, myself) {
+    getRandomNumber(obj, myself, function(get) {
+      current += get;
+      if(index == 5)
+        callback(current);
+      else
+        callback(current, index+1, array, array[index+1])
+    });
+  });
 }
 
-function count() {
-  if(alive.length == 0) {
-    var result = 0;
-    for(var i = 0; i < 5; i++)
-      result += parseInt($("#control-ring span:eq("+i.toString()+")").text());
+function bHandler(current, index, array, callback) {
+  touch(1, function(obj, myself) {
+    getRandomNumber(obj, myself, function(get) {
+      current += get;
+      if(index == 5)
+        callback(current);
+      else
+        callback(current, index+1, array, array[index+1])
+    });
+  });
+}
+
+function cHandler(current, index, array, callback) {
+  touch(2, function(obj, myself) {
+    getRandomNumber(obj, myself, function(get) {
+      current += get;
+      if(index == 5)
+        callback(current);
+      else
+        callback(current, index+1, array, array[index+1])
+    });
+  });
+}
+
+function dHandler(current, index, array, callback) {
+  touch(3, function(obj, myself) {
+    getRandomNumber(obj, myself, function(get) {
+      current += get;
+      if(index == 5)
+        callback(current);
+      else
+        callback(current, index+1, array, array[index+1])
+    });
+  });
+}
+
+function eHandler(current, index, array, callback) {
+  touch(4, function(obj, myself) {
+    getRandomNumber(obj, myself, function(get) {
+      current += get;
+      if(index == 5) {
+        callback(current);
+      }
+      else
+        callback(current, index+1, array, array[index+1])
+    });
+  });
+}
+
+function bubbleHandler(result) {
+  $(".info").removeClass("touch").addClass("untouch");
+  setTimeout(function() {
     $("#info-bar span").text(result.toString()).removeClass("hide").addClass("show");
     $(".info").removeClass("untouch").addClass("touch");
-  }
+  }, 1000);
 }
 
 function reset() {

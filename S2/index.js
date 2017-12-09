@@ -1,5 +1,4 @@
 var alive = [0, 1, 2, 3, 4];
-var req_queue = [];
 begin = false;
 $(function(){
   $(".apb").bind("click", robot);
@@ -76,9 +75,6 @@ function reset() {
   $(".info").removeClass("untouch").addClass("touch");
   $("#control-ring span").text("");
   alive = [0, 1, 2, 3, 4];
-  for(x in req_queue)
-    req_queue[x].abort();
-  req_queue = [];
   $(".apb").removeClass("apb_touch").addClass("apb_untouch");
   begin = false;
 }
