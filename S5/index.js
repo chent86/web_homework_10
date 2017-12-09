@@ -1,10 +1,8 @@
-begin = false;
 $(function(){
   $(".apb").bind("click", robot);
   $(".apb").bind("mouseleave", reset);  
 });
 function robot() {
-  if(!begin) {
     begin = true;
     var alive = [0, 1, 2, 3, 4];
     var order = [];
@@ -30,11 +28,9 @@ function robot() {
     handler.push(name_set[5]);
     $("#order").text(letter).removeClass("hide").addClass("show");
     handler[0](0, 1, handler, alive, handler[1]);                          //start
-  }
 }
 
 function touch(index, callback) {
-  if(begin) {
     var myself = $("#control-ring li:eq("+index.toString()+")");
     if($("#control-ring span:eq("+index.toString()+")").text() == "..." || myself[0].className != "untouch")  //rgb late?
       return;  //Thought it is still blue, it is killed in fact.
@@ -43,11 +39,9 @@ function touch(index, callback) {
     var obj = $("#control-ring span:eq("+myself.index().toString()+")");
     obj.text("...").removeClass("hide").addClass("show");
     callback(obj, myself);   
-  }
 }
 
 function getRandomNumber(obj, myself, alive, callback) {
-  if(begin) {
     $.get("/", function(result){
       if(obj.text() == "...") {
         obj.text(result);
@@ -63,7 +57,6 @@ function getRandomNumber(obj, myself, alive, callback) {
         }, 1000);
       }
     });
-  }
 }
 
 function aHandler(current, index, array, alive, callback, message) {
@@ -241,8 +234,6 @@ function reset() {
   $("#control-ring li").removeClass("touch").addClass("untouch"); //save all
   $(".info").removeClass("untouch").addClass("touch");
   $("#control-ring span").text("");
-  alive = [0, 1, 2, 3, 4];
-  begin = false;
   $("#order").removeClass("show").addClass("hide");
   $(".apb").removeClass("apb_touch").addClass("apb_untouch");
   $("#talking span").removeClass("show").addClass("hide");
