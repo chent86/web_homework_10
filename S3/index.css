@@ -58,6 +58,14 @@ body {
 	background-size: 20px 16px;
 }
 
+.apb_touch {
+	cursor: not-allowed;
+}
+
+.apb_untouch {
+	cursor: pointer;
+}
+
 #button:hover .apb {
 	background-image: url("images/atplus_green.png");
 	background-size: 25px 23px;
@@ -119,7 +127,7 @@ body {
 
 .untouch {
 	background-color: #383F9F;
-	cursor: pointer;
+	cursor: not-allowed;
 }
 
 .touch {

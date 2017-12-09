@@ -4,21 +4,24 @@ var order = [];
 begin = false;
 $(function(){
   $(".apb").bind("click", robot);
-  $("#button").bind("mouseleave", reset);  
+  $(".apb").bind("mouseleave", reset);  
 });
 function robot() {
-  begin = true;
-  order = [];
-  var letter = "";
-  while(order.length != 5) {
-    var tmp = Math.round(Math.random() * 4);
-    if(order.indexOf(tmp) == -1) {
-      order.push(tmp);
-      letter += String.fromCharCode('A'.charCodeAt()+tmp)+" ";
+  if(!begin) {
+    begin = true;
+    order = [];
+    $(".apb").removeClass("apb_untouch").addClass("apb_touch");
+    var letter = "";
+    while(order.length != 5) {
+      var tmp = Math.round(Math.random() * 4);
+      if(order.indexOf(tmp) == -1) {
+        order.push(tmp);
+        letter += String.fromCharCode('A'.charCodeAt()+tmp)+" ";
+      }
     }
+    $("#order").text(letter).removeClass("hide").addClass("show");
+    handler(0, check);
   }
-  $("#order").text(letter).removeClass("hide").addClass("show");
-  handler(0, check);
 }
 
 function handler(times, callback) {
@@ -89,4 +92,5 @@ function reset() {
   req_queue = [];
   begin = false;
   $("#order").removeClass("show").addClass("hide");
+  $(".apb").removeClass("apb_touch").addClass("apb_untouch");
 }

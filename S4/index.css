@@ -42,6 +42,7 @@ body {
   width: 100%;
   color: #586868;
   transition: 0.5s;
+  user-select: none;
 }
 
 #button {
@@ -66,6 +67,14 @@ body {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 20px 16px;
+}
+
+.apb_touch {
+	cursor: not-allowed;
+}
+
+.apb_untouch {
+	cursor: pointer;
 }
 
 #button:hover .apb {
@@ -129,7 +138,7 @@ body {
 
 .untouch {
 	background-color: #383F9F;
-	cursor: pointer;
+	cursor: not-allowed;
 }
 
 .touch {

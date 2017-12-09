@@ -3,11 +3,14 @@ var req_queue = [];
 begin = false;
 $(function(){
   $(".apb").bind("click", robot);
-  $("#button").bind("mouseleave", reset);  
+  $(".apb").bind("mouseleave", reset);  
 });
 function robot() {
-  begin = true;
-  handler(0, check);
+  if(!begin) {
+    $(".apb").removeClass("apb_untouch").addClass("apb_touch");
+    begin = true;
+    handler(0, check);
+  }
 }
 
 function handler(times, callback) {
@@ -76,5 +79,6 @@ function reset() {
   for(x in req_queue)
     req_queue[x].abort();
   req_queue = [];
+  $(".apb").removeClass("apb_touch").addClass("apb_untouch");
   begin = false;
 }

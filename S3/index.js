@@ -1,16 +1,21 @@
 var alive = [0, 1, 2, 3, 4];
 var req_queue = [];
+var begin = false;
 $(function(){
   $(".apb").bind("click", robot);
-  $("#button").bind("mouseleave", reset);  
+  $(".apb").bind("mouseleave", reset);  
 });
 function robot() {
-  for(var i = 0; i < 5; i++) {
-    getSmallRed(i);
-    var myself = $("#control-ring li:eq("+i.toString()+")");
-    var obj = $("#control-ring span:eq("+myself.index().toString()+")");
-    getRandomNumber(obj, myself, i);
-  }  
+  if(!begin) {
+    begin = true;
+    $(".apb").removeClass("apb_untouch").addClass("apb_touch");
+    for(var i = 0; i < 5; i++) {
+      getSmallRed(i);
+      var myself = $("#control-ring li:eq("+i.toString()+")");
+      var obj = $("#control-ring span:eq("+myself.index().toString()+")");
+      getRandomNumber(obj, myself, i);
+    } 
+  } 
 }
 
 function getSmallRed(index) {
@@ -51,5 +56,7 @@ function reset() {
   alive = [0, 1, 2, 3, 4];
   for(x in req_queue)
     req_queue[x].abort();
-  req_queue = [];  
+  req_queue = []; 
+  begin = false; 
+  $(".apb").removeClass("apb_touch").addClass("apb_untouch");
 }
