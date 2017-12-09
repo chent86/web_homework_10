@@ -45,6 +45,20 @@ body {
   user-select: none;
 }
 
+#talking {
+	position: absolute;
+  bottom: 320px;
+  width: 400px;
+  right: -110px;
+  text-align: center;
+  font-family: arial;
+  height: 140px;
+}
+
+#talking span {
+  transition: 0.5s;
+}
+
 #button {
 	padding-left: 40px;
 	width: 20px;

@@ -1,4 +1,3 @@
-var alive = [0, 1, 2, 3, 4];
 begin = false;
 $(function(){
   $(".apb").bind("click", robot);
@@ -7,6 +6,7 @@ $(function(){
 function robot() {
   if(!begin) {
     begin = true;
+    var alive = [0, 1, 2, 3, 4];
     var order = [];
     var handler = [];
     $(".apb").removeClass("apb_untouch").addClass("apb_touch");
@@ -29,7 +29,7 @@ function robot() {
     }
     handler.push(name_set[5]);
     $("#order").text(letter).removeClass("hide").addClass("show");
-    handler[0](0, 1, handler, handler[1]);                          //start
+    handler[0](0, 1, handler, alive, handler[1]);                          //start
   }
 }
 
@@ -46,7 +46,7 @@ function touch(index, callback) {
   }
 }
 
-function getRandomNumber(obj, myself, callback) {
+function getRandomNumber(obj, myself, alive, callback) {
   if(begin) {
     $.get("/", function(result){
       if(obj.text() == "...") {
@@ -58,78 +58,179 @@ function getRandomNumber(obj, myself, callback) {
         }
         if(alive.length == 0)
           $(".info").removeClass("touch").addClass("untouch");
-        // setTimeout(callback, 1000);
-        callback(parseInt(result));
+        setTimeout(function() {
+          callback(parseInt(result));     //activation feeling
+        }, 1000);
       }
     });
   }
 }
 
-function aHandler(current, index, array, callback) {
+function aHandler(current, index, array, alive, callback, message) {
+  var success = true;
+  if(Math.round(Math.random() * 10) < 5)
+    success = false;
+  if(message != undefined) {
+      $("#talking span:eq("+(index-2).toString()+")").text(message);
+      $("#talking span:eq("+(index-2).toString()+")").removeClass("hide").addClass("show");    
+  }
   touch(0, function(obj, myself) {
-    getRandomNumber(obj, myself, function(get) {
+    if(success) {
+      $("#talking span:eq("+(index-1).toString()+")").text("A：这是个天大的秘密");
+      $("#talking span:eq("+(index-1).toString()+")").removeClass("hide").addClass("show");
+    }
+    getRandomNumber(obj, myself, alive, function(get) {
       current += get;
-      if(index == 5)
-        callback(current);
-      else
-        callback(current, index+1, array, array[index+1])
-    });
-  });
-}
-
-function bHandler(current, index, array, callback) {
-  touch(1, function(obj, myself) {
-    getRandomNumber(obj, myself, function(get) {
-      current += get;
-      if(index == 5)
-        callback(current);
-      else
-        callback(current, index+1, array, array[index+1])
-    });
-  });
-}
-
-function cHandler(current, index, array, callback) {
-  touch(2, function(obj, myself) {
-    getRandomNumber(obj, myself, function(get) {
-      current += get;
-      if(index == 5)
-        callback(current);
-      else
-        callback(current, index+1, array, array[index+1])
-    });
-  });
-}
-
-function dHandler(current, index, array, callback) {
-  touch(3, function(obj, myself) {
-    getRandomNumber(obj, myself, function(get) {
-      current += get;
-      if(index == 5)
-        callback(current);
-      else
-        callback(current, index+1, array, array[index+1])
-    });
-  });
-}
-
-function eHandler(current, index, array, callback) {
-  touch(4, function(obj, myself) {
-    getRandomNumber(obj, myself, function(get) {
-      current += get;
-      if(index == 5) {
-        callback(current);
+      if(success) {
+        if(index == 5)
+          callback(current);
+        else
+          callback(current, index+1, array, alive, array[index+1])
       }
-      else
-        callback(current, index+1, array, array[index+1])
+      else {
+        if(index == 5)
+          callback(current, "A：这不是个天大的秘密");
+        else
+          callback(current, index+1, array, alive, array[index+1], "A：这不是个天大的秘密")
+        }
     });
   });
 }
 
-function bubbleHandler(result) {
+function bHandler(current, index, array, alive, callback, message) {
+  var success = true;
+  if(Math.round(Math.random() * 10) < 5)
+    success = false;
+  if(message != undefined) {
+      $("#talking span:eq("+(index-2).toString()+")").text(message);
+      $("#talking span:eq("+(index-2).toString()+")").removeClass("hide").addClass("show");    
+  }
+  touch(1, function(obj, myself) {
+    if(success) {
+      $("#talking span:eq("+(index-1).toString()+")").text("B：我不知道");
+      $("#talking span:eq("+(index-1).toString()+")").removeClass("hide").addClass("show");
+    }
+    getRandomNumber(obj, myself, alive, function(get) {
+      current += get;
+      if(success) {
+        if(index == 5)
+          callback(current);
+        else
+          callback(current, index+1, array, alive, array[index+1])
+      }
+      else {
+        if(index == 5)
+          callback(current, "B：我知道");
+        else
+          callback(current, index+1, array, alive, array[index+1], "B：我知道")
+        }
+    });
+  });
+}
+
+function cHandler(current, index, array, alive, callback, message) {
+  var success = true;
+  if(Math.round(Math.random() * 10) < 5)
+    success = false;
+  if(message != undefined) {
+      $("#talking span:eq("+(index-2).toString()+")").text(message);
+      $("#talking span:eq("+(index-2).toString()+")").removeClass("hide").addClass("show");    
+  }
+  touch(2, function(obj, myself) {
+    if(success) {
+      $("#talking span:eq("+(index-1).toString()+")").text("C：你不知道");
+      $("#talking span:eq("+(index-1).toString()+")").removeClass("hide").addClass("show");
+    }
+    getRandomNumber(obj, myself, alive, function(get) {
+      current += get;
+      if(success) {
+        if(index == 5)
+          callback(current);
+        else
+          callback(current, index+1, array, alive, array[index+1])
+      }
+      else {
+        if(index == 5)
+          callback(current, "C：你知道");
+        else
+          callback(current, index+1, array, alive, array[index+1], "C：你知道")
+        }
+    });
+  });
+}
+
+function dHandler(current, index, array, alive, callback, message) {
+  var success = true;
+  if(Math.round(Math.random() * 10) < 5)
+    success = false;
+  if(message != undefined) {
+      $("#talking span:eq("+(index-2).toString()+")").text(message);
+      $("#talking span:eq("+(index-2).toString()+")").removeClass("hide").addClass("show");    
+  }
+  touch(3, function(obj, myself) {
+    if(success) {
+      $("#talking span:eq("+(index-1).toString()+")").text("D：他不知道");
+      $("#talking span:eq("+(index-1).toString()+")").removeClass("hide").addClass("show");
+    }
+    getRandomNumber(obj, myself, alive, function(get) {
+      current += get;
+      if(success) {
+        if(index == 5)
+          callback(current);
+        else
+          callback(current, index+1, array, alive, array[index+1])
+      }
+      else {
+        if(index == 5)
+          callback(current, "D：他知道");
+        else
+          callback(current, index+1, array, alive, array[index+1], "D：他知道")
+        }
+    });
+  });
+}
+
+function eHandler(current, index, array, alive, callback, message) {
+  var success = true;
+  if(Math.round(Math.random() * 10) < 5)
+    success = false;
+  if(message != undefined) {
+      $("#talking span:eq("+(index-2).toString()+")").text(message);
+      $("#talking span:eq("+(index-2).toString()+")").removeClass("hide").addClass("show");    
+  }
+  touch(4, function(obj, myself) {
+    if(success) {
+      $("#talking span:eq("+(index-1).toString()+")").text("E：才怪");
+      $("#talking span:eq("+(index-1).toString()+")").removeClass("hide").addClass("show");
+    }
+    getRandomNumber(obj, myself, alive, function(get) {
+      current += get;
+      if(success) {
+        if(index == 5)
+          callback(current);
+        else
+          callback(current, index+1, array, alive, array[index+1])
+      }
+      else {
+        if(index == 5)
+          callback(current, "E：才不怪");
+        else
+          callback(current, index+1, array, alive, array[index+1], "E：才不怪")
+        }
+    });
+  });
+}
+
+function bubbleHandler(result, message) {
+  if(message != undefined) {
+    $("#talking span:eq(4)").text(message);
+    $("#talking span:eq(4)").removeClass("hide").addClass("show");     
+  }
   $(".info").removeClass("touch").addClass("untouch");
+    $("#talking span:eq(5)").text("大气泡：楼主异步调用战斗力感人，目测不超过"+result.toString()+"");
   setTimeout(function() {
     $("#info-bar span").text(result.toString()).removeClass("hide").addClass("show");
+    $("#talking span:eq(5)").removeClass("hide").addClass("show");
     $(".info").removeClass("untouch").addClass("touch");
   }, 1000);
 }
@@ -144,4 +245,5 @@ function reset() {
   begin = false;
   $("#order").removeClass("show").addClass("hide");
   $(".apb").removeClass("apb_touch").addClass("apb_untouch");
+  $("#talking span").removeClass("show").addClass("hide");
 }
